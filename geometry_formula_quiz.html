@@ -1,0 +1,1042 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Engineering Geometry Formula Quiz</title>
+<style>
+  :root {
+    --bg: #f4f6f8;
+    --panel: #ffffff;
+    --ink: #17202a;
+    --muted: #667085;
+    --line: #d9dee7;
+    --accent: #2457d6;
+    --accent-soft: #eaf0ff;
+    --good: #137a42;
+    --good-bg: #eaf8ef;
+    --bad: #b42318;
+    --bad-bg: #fff0ee;
+    --shadow: 0 10px 30px rgba(20, 32, 60, 0.08);
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    color: var(--ink);
+    background: var(--bg);
+  }
+
+  button, input { font: inherit; }
+
+  .app {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 235px 1fr;
+  }
+
+  aside {
+    background: #182033;
+    color: white;
+    padding: 24px 18px;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+  }
+
+  .brand {
+    font-size: 1.18rem;
+    font-weight: 800;
+    line-height: 1.25;
+    margin-bottom: 7px;
+  }
+
+  .subtitle {
+    color: #b9c3d8;
+    font-size: .88rem;
+    line-height: 1.4;
+    margin-bottom: 24px;
+  }
+
+  .nav-label {
+    color: #8f9ab1;
+    font-size: .72rem;
+    font-weight: 800;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    margin: 20px 8px 8px;
+  }
+
+  .nav-btn {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 0;
+    border-radius: 10px;
+    padding: 11px 12px;
+    margin: 5px 0;
+    color: #e7ecf6;
+    background: transparent;
+    cursor: pointer;
+    text-align: left;
+  }
+
+  .nav-btn:hover { background: rgba(255,255,255,.07); }
+  .nav-btn.active {
+    background: #2c5bdd;
+    color: white;
+    font-weight: 700;
+  }
+
+  .nav-btn .count {
+    color: #abb7cf;
+    font-size: .78rem;
+  }
+
+  .nav-btn.active .count { color: white; opacity: .85; }
+
+  main {
+    padding: 28px;
+  }
+
+  .topbar {
+    max-width: 920px;
+    margin: 0 auto 18px;
+    display: flex;
+    gap: 16px;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+
+  h1 {
+    margin: 0;
+    font-size: clamp(1.55rem, 3vw, 2.25rem);
+    letter-spacing: -.025em;
+  }
+
+  .intro {
+    margin: 6px 0 0;
+    color: var(--muted);
+    line-height: 1.45;
+  }
+
+  .scorebox {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 10px 14px;
+    white-space: nowrap;
+    box-shadow: var(--shadow);
+    font-weight: 700;
+  }
+
+  .content {
+    max-width: 920px;
+    margin: auto;
+  }
+
+  .card {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    box-shadow: var(--shadow);
+  }
+
+  .quiz-card { padding: 22px; }
+
+  .progress-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: var(--muted);
+    font-size: .9rem;
+    margin-bottom: 10px;
+  }
+
+  .progress {
+    height: 8px;
+    border-radius: 999px;
+    background: #e9edf3;
+    overflow: hidden;
+    margin-bottom: 20px;
+  }
+
+  .progress > div {
+    height: 100%;
+    width: 0;
+    background: var(--accent);
+    transition: width .25s ease;
+  }
+
+  .topic-pill {
+    display: inline-block;
+    background: var(--accent-soft);
+    color: var(--accent);
+    border-radius: 999px;
+    padding: 6px 10px;
+    font-size: .78rem;
+    font-weight: 800;
+    margin-bottom: 14px;
+  }
+
+  .prompt {
+    font-size: clamp(1.12rem, 2.2vw, 1.42rem);
+    font-weight: 750;
+    line-height: 1.4;
+    margin: 0 0 18px;
+  }
+
+  .diagram {
+    display: grid;
+    place-items: center;
+    min-height: 150px;
+    margin: 4px 0 18px;
+    border: 1px dashed var(--line);
+    border-radius: 12px;
+    background: #fbfcfe;
+    overflow: hidden;
+  }
+
+  .diagram svg {
+    width: min(360px, 92%);
+    height: 145px;
+  }
+
+  .choices {
+    display: grid;
+    gap: 10px;
+  }
+
+  .choice {
+    border: 1px solid var(--line);
+    border-radius: 11px;
+    background: white;
+    padding: 13px 14px;
+    text-align: left;
+    cursor: pointer;
+    transition: .15s;
+  }
+
+  .choice:hover:not(:disabled) {
+    border-color: var(--accent);
+    transform: translateY(-1px);
+  }
+
+  .choice:disabled { cursor: default; }
+
+  .choice.correct {
+    border-color: var(--good);
+    background: var(--good-bg);
+    color: var(--good);
+    font-weight: 700;
+  }
+
+  .choice.wrong {
+    border-color: var(--bad);
+    background: var(--bad-bg);
+    color: var(--bad);
+    font-weight: 700;
+  }
+
+  .feedback {
+    min-height: 52px;
+    margin-top: 16px;
+    border-radius: 11px;
+    padding: 12px 14px;
+    display: none;
+    line-height: 1.45;
+  }
+
+  .feedback.show { display: block; }
+  .feedback.good { background: var(--good-bg); color: var(--good); }
+  .feedback.bad { background: var(--bad-bg); color: var(--bad); }
+
+  .actions {
+    display: flex;
+    gap: 10px;
+    justify-content: space-between;
+    margin-top: 18px;
+    flex-wrap: wrap;
+  }
+
+  .btn {
+    border: 0;
+    border-radius: 10px;
+    padding: 11px 15px;
+    cursor: pointer;
+    font-weight: 750;
+  }
+
+  .btn.secondary {
+    background: #edf0f5;
+    color: #30394b;
+  }
+
+  .btn.primary {
+    background: var(--accent);
+    color: white;
+  }
+
+  .btn:disabled {
+    opacity: .45;
+    cursor: not-allowed;
+  }
+
+  .reference {
+    padding: 22px;
+  }
+
+  .reference h2 { margin-top: 0; }
+
+  .formula-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+  }
+
+  .formula-group {
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 14px;
+    background: #fcfdff;
+  }
+
+  .formula-group h3 {
+    margin: 0 0 10px;
+    font-size: 1rem;
+  }
+
+  .formula-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 14px;
+    padding: 7px 0;
+    border-top: 1px solid #edf0f4;
+    line-height: 1.3;
+  }
+
+  .formula-row:first-of-type { border-top: 0; }
+  .formula-row span:last-child {
+    font-family: "Times New Roman", serif;
+    font-size: 1.05rem;
+    text-align: right;
+  }
+
+  .note {
+    color: var(--muted);
+    font-size: .88rem;
+    line-height: 1.45;
+    margin-top: 14px;
+  }
+
+  .hidden { display: none !important; }
+
+  @media (max-width: 760px) {
+    .app { grid-template-columns: 1fr; }
+    aside {
+      position: static;
+      height: auto;
+      padding: 15px;
+    }
+    .brand, .subtitle, .nav-label { display: none; }
+    nav {
+      display: flex;
+      overflow-x: auto;
+      gap: 7px;
+      padding-bottom: 3px;
+    }
+    .nav-btn {
+      width: auto;
+      flex: 0 0 auto;
+      margin: 0;
+      gap: 9px;
+    }
+    main { padding: 18px 12px; }
+    .topbar { flex-direction: column; }
+    .formula-grid { grid-template-columns: 1fr; }
+    .scorebox { align-self: stretch; text-align: center; }
+  }
+
+  /* Improved phone and tablet layout */
+  @media (max-width: 760px) {
+    body {
+      -webkit-text-size-adjust: 100%;
+      padding-bottom: env(safe-area-inset-bottom);
+    }
+
+    .app {
+      display: block;
+      min-height: 100dvh;
+    }
+
+    aside {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      height: auto;
+      padding: calc(10px + env(safe-area-inset-top)) 10px 10px;
+      border-bottom: 1px solid rgba(255,255,255,.12);
+      box-shadow: 0 4px 14px rgba(10, 18, 35, .18);
+    }
+
+    .brand,
+    .subtitle,
+    .nav-label {
+      display: none;
+    }
+
+    nav {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      overscroll-behavior-x: contain;
+      scrollbar-width: none;
+      scroll-snap-type: x proximity;
+      padding: 1px 1px 3px;
+    }
+
+    nav::-webkit-scrollbar {
+      display: none;
+    }
+
+    .nav-btn {
+      width: auto;
+      min-height: 44px;
+      flex: 0 0 auto;
+      gap: 8px;
+      margin: 0;
+      padding: 10px 13px;
+      border-radius: 999px;
+      scroll-snap-align: start;
+      white-space: nowrap;
+    }
+
+    .nav-btn .count {
+      display: none;
+    }
+
+    main {
+      padding: 16px 10px calc(22px + env(safe-area-inset-bottom));
+    }
+
+    .topbar {
+      margin-bottom: 12px;
+      gap: 10px;
+    }
+
+    h1 {
+      font-size: clamp(1.45rem, 7vw, 1.9rem);
+      line-height: 1.12;
+    }
+
+    .intro {
+      font-size: .92rem;
+      margin-top: 5px;
+    }
+
+    .scorebox {
+      align-self: stretch;
+      width: 100%;
+      padding: 9px 12px;
+      text-align: center;
+      box-shadow: none;
+    }
+
+    .card {
+      border-radius: 14px;
+      box-shadow: 0 6px 20px rgba(20, 32, 60, 0.07);
+    }
+
+    .quiz-card,
+    .reference {
+      padding: 16px;
+    }
+
+    .progress-row {
+      font-size: .82rem;
+      gap: 8px;
+    }
+
+    .progress {
+      margin-bottom: 16px;
+    }
+
+    .topic-pill {
+      margin-bottom: 11px;
+    }
+
+    .prompt {
+      font-size: 1.1rem;
+      line-height: 1.38;
+      margin-bottom: 14px;
+    }
+
+    .diagram {
+      min-height: 118px;
+      margin-bottom: 14px;
+    }
+
+    .diagram svg {
+      width: 96%;
+      height: 118px;
+    }
+
+    .choices {
+      gap: 9px;
+    }
+
+    .choice {
+      min-height: 50px;
+      padding: 13px;
+      line-height: 1.35;
+      touch-action: manipulation;
+    }
+
+    .feedback {
+      margin-top: 13px;
+      padding: 11px 12px;
+      font-size: .94rem;
+    }
+
+    .actions {
+      position: sticky;
+      bottom: 0;
+      z-index: 10;
+      gap: 8px;
+      margin: 16px -16px -16px;
+      padding: 12px 16px calc(12px + env(safe-area-inset-bottom));
+      background: rgba(255,255,255,.96);
+      border-top: 1px solid var(--line);
+      backdrop-filter: blur(8px);
+    }
+
+    .btn {
+      min-height: 46px;
+      flex: 1 1 130px;
+      padding: 11px 13px;
+      touch-action: manipulation;
+    }
+
+    .formula-grid {
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+
+    .formula-group {
+      padding: 13px;
+    }
+
+    .formula-row {
+      align-items: flex-start;
+      gap: 10px;
+    }
+
+    .formula-row span:first-child {
+      flex: 1 1 48%;
+    }
+
+    .formula-row span:last-child {
+      flex: 1 1 52%;
+      overflow-wrap: anywhere;
+    }
+  }
+
+  @media (max-width: 390px) {
+    main {
+      padding-left: 7px;
+      padding-right: 7px;
+    }
+
+    .quiz-card,
+    .reference {
+      padding: 13px;
+    }
+
+    .actions {
+      margin-left: -13px;
+      margin-right: -13px;
+      margin-bottom: -13px;
+      padding-left: 13px;
+      padding-right: 13px;
+    }
+
+    .prompt {
+      font-size: 1.04rem;
+    }
+
+    .choice {
+      font-size: .96rem;
+    }
+  }
+
+  @media (hover: none) and (pointer: coarse) {
+    .choice:hover:not(:disabled) {
+      border-color: var(--line);
+      transform: none;
+    }
+
+    .nav-btn:hover {
+      background: transparent;
+    }
+
+    .nav-btn.active:hover {
+      background: #2c5bdd;
+    }
+  }
+
+</style>
+</head>
+<body>
+<div class="app">
+  <aside>
+    <div class="brand">Engineering Geometry</div>
+    <div class="subtitle">Core areas, volumes, surface areas, and section-property formulas.</div>
+
+    <nav>
+      <div class="nav-label">Practice</div>
+      <button class="nav-btn active" data-mode="all">Mixed Quiz <span class="count">24</span></button>
+      <button class="nav-btn" data-mode="area2d">2D Areas <span class="count">7</span></button>
+      <button class="nav-btn" data-mode="volume">Volumes <span class="count">7</span></button>
+      <button class="nav-btn" data-mode="surface">Surface Areas <span class="count">6</span></button>
+      <button class="nav-btn" data-mode="engineering">Engineering Extras <span class="count">4</span></button>
+
+      <div class="nav-label">Study</div>
+      <button class="nav-btn" data-mode="reference">Formula Sheet <span class="count">↗</span></button>
+    </nav>
+  </aside>
+
+  <main>
+    <div class="topbar">
+      <div>
+        <h1 id="pageTitle">Mixed Geometry Quiz</h1>
+        <p class="intro" id="pageIntro">Choose the correct formula. Variables are defined in the explanations and reference sheet.</p>
+      </div>
+      <div class="scorebox">Score: <span id="score">0</span>/<span id="attempts">0</span></div>
+    </div>
+
+    <div class="content">
+      <section id="quizView" class="card quiz-card">
+        <div class="progress-row">
+          <span id="questionCounter">Question 1 of 24</span>
+          <span id="streak">Streak: 0</span>
+        </div>
+        <div class="progress"><div id="progressBar"></div></div>
+
+        <div class="topic-pill" id="topicPill">2D Area</div>
+        <p class="prompt" id="prompt"></p>
+        <div class="diagram" id="diagram"></div>
+        <div class="choices" id="choices"></div>
+        <div class="feedback" id="feedback"></div>
+
+        <div class="actions">
+          <button class="btn secondary" id="restartBtn">Restart Set</button>
+          <button class="btn primary" id="nextBtn" disabled>Next Question</button>
+        </div>
+      </section>
+
+      <section id="referenceView" class="card reference hidden">
+        <h2>Core Engineering Geometry Formula Sheet</h2>
+        <div class="formula-grid">
+          <div class="formula-group">
+            <h3>2D Areas</h3>
+            <div class="formula-row"><span>Rectangle</span><span>A = bh</span></div>
+            <div class="formula-row"><span>Triangle</span><span>A = ½bh</span></div>
+            <div class="formula-row"><span>Circle</span><span>A = πr²</span></div>
+            <div class="formula-row"><span>Trapezoid</span><span>A = ½(b₁+b₂)h</span></div>
+            <div class="formula-row"><span>Parallelogram</span><span>A = bh</span></div>
+            <div class="formula-row"><span>Ellipse</span><span>A = πab</span></div>
+            <div class="formula-row"><span>Annulus</span><span>A = π(R²-r²)</span></div>
+          </div>
+
+          <div class="formula-group">
+            <h3>Volumes</h3>
+            <div class="formula-row"><span>Rectangular prism</span><span>V = lwh</span></div>
+            <div class="formula-row"><span>Cylinder</span><span>V = πr²h</span></div>
+            <div class="formula-row"><span>Sphere</span><span>V = ⁴⁄₃πr³</span></div>
+            <div class="formula-row"><span>Cone</span><span>V = ⅓πr²h</span></div>
+            <div class="formula-row"><span>Pyramid</span><span>V = ⅓B h</span></div>
+            <div class="formula-row"><span>Prism, general</span><span>V = B h</span></div>
+            <div class="formula-row"><span>Hollow cylinder</span><span>V = π(R²-r²)h</span></div>
+          </div>
+
+          <div class="formula-group">
+            <h3>Surface Areas</h3>
+            <div class="formula-row"><span>Rectangular prism</span><span>S = 2(lw+lh+wh)</span></div>
+            <div class="formula-row"><span>Cylinder, total</span><span>S = 2πrh + 2πr²</span></div>
+            <div class="formula-row"><span>Cylinder, lateral</span><span>S<sub>L</sub> = 2πrh</span></div>
+            <div class="formula-row"><span>Sphere</span><span>S = 4πr²</span></div>
+            <div class="formula-row"><span>Cone, total</span><span>S = πrℓ + πr²</span></div>
+            <div class="formula-row"><span>Cone, lateral</span><span>S<sub>L</sub> = πrℓ</span></div>
+          </div>
+
+          <div class="formula-group">
+            <h3>Engineering Extras</h3>
+            <div class="formula-row"><span>Circle circumference</span><span>C = 2πr = πd</span></div>
+            <div class="formula-row"><span>Arc length, radians</span><span>s = rθ</span></div>
+            <div class="formula-row"><span>Rectangle centroid</span><span>x̄ = b/2, ȳ = h/2</span></div>
+            <div class="formula-row"><span>Triangle centroid from base</span><span>ȳ = h/3</span></div>
+            <div class="formula-row"><span>Rectangle area moment</span><span>I<sub>x</sub> = bh³/12</span></div>
+            <div class="formula-row"><span>Circle area moment</span><span>I = πr⁴/4</span></div>
+            <div class="formula-row"><span>Polar moment, solid circle</span><span>J = πr⁴/2</span></div>
+          </div>
+        </div>
+        <p class="note">
+          Symbols: <b>B</b> = base area, <b>r</b> = radius, <b>R</b> = outer radius,
+          <b>h</b> = perpendicular height, <b>ℓ</b> = cone slant height,
+          <b>a</b> and <b>b</b> = ellipse semi-axes, and <b>θ</b> is in radians for arc length.
+        </p>
+      </section>
+    </div>
+  </main>
+</div>
+
+<script>
+const diagrams = {
+  rectangle: `
+    <svg viewBox="0 0 360 145" aria-label="rectangle diagram">
+      <rect x="78" y="28" width="205" height="90" fill="#eaf0ff" stroke="#2457d6" stroke-width="3"/>
+      <text x="180" y="139" text-anchor="middle" font-size="16">b</text>
+      <text x="57" y="78" text-anchor="middle" font-size="16">h</text>
+    </svg>`,
+  triangle: `
+    <svg viewBox="0 0 360 145">
+      <polygon points="70,118 292,118 224,24" fill="#eaf0ff" stroke="#2457d6" stroke-width="3"/>
+      <line x1="224" y1="24" x2="224" y2="118" stroke="#667085" stroke-dasharray="6 5" stroke-width="2"/>
+      <text x="180" y="139" text-anchor="middle" font-size="16">b</text>
+      <text x="236" y="75" font-size="16">h</text>
+    </svg>`,
+  circle: `
+    <svg viewBox="0 0 360 145">
+      <circle cx="180" cy="72" r="52" fill="#eaf0ff" stroke="#2457d6" stroke-width="3"/>
+      <line x1="180" y1="72" x2="232" y2="72" stroke="#667085" stroke-width="2"/>
+      <text x="207" y="64" text-anchor="middle" font-size="16">r</text>
+    </svg>`,
+  trapezoid: `
+    <svg viewBox="0 0 360 145">
+      <polygon points="92,24 265,24 306,118 53,118" fill="#eaf0ff" stroke="#2457d6" stroke-width="3"/>
+      <line x1="92" y1="24" x2="92" y2="118" stroke="#667085" stroke-dasharray="6 5" stroke-width="2"/>
+      <text x="178" y="18" text-anchor="middle" font-size="16">b₁</text>
+      <text x="179" y="139" text-anchor="middle" font-size="16">b₂</text>
+      <text x="78" y="75" text-anchor="middle" font-size="16">h</text>
+    </svg>`,
+  ellipse: `
+    <svg viewBox="0 0 360 145">
+      <ellipse cx="180" cy="72" rx="105" ry="48" fill="#eaf0ff" stroke="#2457d6" stroke-width="3"/>
+      <line x1="180" y1="72" x2="285" y2="72" stroke="#667085" stroke-width="2"/>
+      <line x1="180" y1="72" x2="180" y2="24" stroke="#667085" stroke-width="2"/>
+      <text x="233" y="64" text-anchor="middle" font-size="16">a</text>
+      <text x="190" y="49" font-size="16">b</text>
+    </svg>`,
+  annulus: `
+    <svg viewBox="0 0 360 145">
+      <circle cx="180" cy="72" r="56" fill="#eaf0ff" stroke="#2457d6" stroke-width="3"/>
+      <circle cx="180" cy="72" r="25" fill="white" stroke="#2457d6" stroke-width="3"/>
+      <line x1="180" y1="72" x2="236" y2="72" stroke="#667085" stroke-width="2"/>
+      <line x1="180" y1="72" x2="205" y2="72" stroke="#667085" stroke-width="4"/>
+      <text x="225" y="64" font-size="16">R</text>
+      <text x="190" y="92" font-size="16">r</text>
+    </svg>`,
+  prism: `
+    <svg viewBox="0 0 360 145">
+      <rect x="95" y="43" width="150" height="75" fill="#eaf0ff" stroke="#2457d6" stroke-width="3"/>
+      <polygon points="95,43 130,20 280,20 245,43" fill="#f4f7ff" stroke="#2457d6" stroke-width="3"/>
+      <polygon points="245,43 280,20 280,95 245,118" fill="#dde7ff" stroke="#2457d6" stroke-width="3"/>
+      <text x="170" y="137" font-size="16">l</text>
+      <text x="78" y="84" font-size="16">h</text>
+      <text x="272" y="117" font-size="16">w</text>
+    </svg>`,
+  cylinder: `
+    <svg viewBox="0 0 360 145">
+      <ellipse cx="180" cy="31" rx="72" ry="18" fill="#f4f7ff" stroke="#2457d6" stroke-width="3"/>
+      <path d="M108 31v82c0 10 32 18 72 18s72-8 72-18V31" fill="#eaf0ff" stroke="#2457d6" stroke-width="3"/>
+      <ellipse cx="180" cy="113" rx="72" ry="18" fill="none" stroke="#2457d6" stroke-width="3"/>
+      <line x1="180" y1="31" x2="252" y2="31" stroke="#667085" stroke-width="2"/>
+      <text x="217" y="24" font-size="16">r</text>
+      <text x="268" y="75" font-size="16">h</text>
+    </svg>`,
+  sphere: `
+    <svg viewBox="0 0 360 145">
+      <circle cx="180" cy="72" r="55" fill="#eaf0ff" stroke="#2457d6" stroke-width="3"/>
+      <ellipse cx="180" cy="72" rx="55" ry="17" fill="none" stroke="#8ba7ee" stroke-width="2"/>
+      <line x1="180" y1="72" x2="235" y2="72" stroke="#667085" stroke-width="2"/>
+      <text x="210" y="64" font-size="16">r</text>
+    </svg>`,
+  cone: `
+    <svg viewBox="0 0 360 145">
+      <path d="M180 18L100 113Q180 138 260 113Z" fill="#eaf0ff" stroke="#2457d6" stroke-width="3"/>
+      <ellipse cx="180" cy="113" rx="80" ry="20" fill="#f4f7ff" stroke="#2457d6" stroke-width="3"/>
+      <line x1="180" y1="18" x2="180" y2="113" stroke="#667085" stroke-dasharray="6 5" stroke-width="2"/>
+      <line x1="180" y1="113" x2="260" y2="113" stroke="#667085" stroke-width="2"/>
+      <text x="189" y="70" font-size="16">h</text>
+      <text x="219" y="105" font-size="16">r</text>
+      <text x="238" y="56" font-size="16">ℓ</text>
+    </svg>`,
+  pyramid: `
+    <svg viewBox="0 0 360 145">
+      <polygon points="180,17 85,105 180,132 277,104" fill="#eaf0ff" stroke="#2457d6" stroke-width="3"/>
+      <line x1="180" y1="17" x2="180" y2="132" stroke="#667085" stroke-dasharray="6 5" stroke-width="2"/>
+      <line x1="85" y1="105" x2="277" y2="104" stroke="#2457d6" stroke-width="3"/>
+      <text x="190" y="70" font-size="16">h</text>
+      <text x="183" y="142" text-anchor="middle" font-size="16">base area B</text>
+    </svg>`,
+  arc: `
+    <svg viewBox="0 0 360 145">
+      <path d="M116 112 A78 78 0 0 1 242 37" fill="none" stroke="#2457d6" stroke-width="6"/>
+      <line x1="116" y1="112" x2="180" y2="72" stroke="#667085" stroke-width="2"/>
+      <line x1="180" y1="72" x2="242" y2="37" stroke="#667085" stroke-width="2"/>
+      <text x="141" y="82" font-size="16">r</text>
+      <text x="185" y="61" font-size="16">θ</text>
+      <text x="229" y="27" font-size="16">s</text>
+    </svg>`
+};
+
+const q = (category, topic, prompt, diagram, choices, answer, explanation) =>
+  ({ category, topic, prompt, diagram, choices, answer, explanation });
+
+const questions = [
+  q("area2d","2D Area","What is the area of a rectangle with base b and height h?","rectangle",
+    ["A = b + h","A = bh","A = ½bh","A = 2b + 2h"],1,
+    "A = bh. Multiply the two perpendicular side lengths."),
+  q("area2d","2D Area","What is the area of a triangle?","triangle",
+    ["A = bh","A = ½bh","A = b²h","A = ⅓bh"],1,
+    "A = ½bh, where h is perpendicular to the chosen base."),
+  q("area2d","2D Area","What is the area enclosed by a circle of radius r?","circle",
+    ["A = 2πr","A = πr²","A = 4πr²","A = πr³"],1,
+    "A = πr². The circumference is 2πr, not the area."),
+  q("area2d","2D Area","What is the area of a trapezoid with parallel sides b₁ and b₂?","trapezoid",
+    ["A = (b₁+b₂)h","A = ½(b₁+b₂)h","A = b₁b₂h","A = ½b₁b₂"],1,
+    "A = ½(b₁+b₂)h: average the parallel side lengths, then multiply by height."),
+  q("area2d","2D Area","What is the area of an ellipse with semi-axes a and b?","ellipse",
+    ["A = π(a+b)","A = 2πab","A = πab","A = ½πab"],2,
+    "A = πab. Both a and b are semi-axis lengths, not full diameters."),
+  q("area2d","2D Area","What is the area of an annulus with outer radius R and inner radius r?","annulus",
+    ["A = π(R-r)²","A = π(R²-r²)","A = 2π(R-r)","A = π(R²+r²)"],1,
+    "Subtract the inner circle area from the outer circle area: A = π(R²-r²)."),
+  q("area2d","2D Area","A parallelogram has base b and perpendicular height h. What is its area?","rectangle",
+    ["A = bh","A = ½bh","A = b+h","A = b²+h²"],0,
+    "A = bh. The slanted side length is not used unless it helps determine the perpendicular height."),
+
+  q("volume","Volume","What is the volume of a rectangular prism?","prism",
+    ["V = l+w+h","V = 2(lw+lh+wh)","V = lwh","V = ⅓lwh"],2,
+    "V = lwh. The expression 2(lw+lh+wh) is surface area."),
+  q("volume","Volume","What is the volume of a cylinder?","cylinder",
+    ["V = 2πrh","V = πr²h","V = ⅓πr²h","V = 4πr²"],1,
+    "V = base area × height = πr²h."),
+  q("volume","Volume","What is the volume of a sphere?","sphere",
+    ["V = 4πr²","V = ⅔πr³","V = ⁴⁄₃πr³","V = πr²h"],2,
+    "V = ⁴⁄₃πr³. The sphere's surface area is 4πr²."),
+  q("volume","Volume","What is the volume of a right circular cone?","cone",
+    ["V = πr²h","V = ⅓πr²h","V = πrℓ","V = ⁴⁄₃πr³"],1,
+    "V = ⅓πr²h. A cone is one-third the volume of a cylinder with the same base and height."),
+  q("volume","Volume","For any prism with base area B and perpendicular height h, what is the volume?","prism",
+    ["V = Bh","V = ½Bh","V = ⅓Bh","V = B+h"],0,
+    "V = Bh. Prisms have a constant cross-sectional area along their height."),
+  q("volume","Volume","For a pyramid with base area B and perpendicular height h, what is the volume?","pyramid",
+    ["V = Bh","V = ½Bh","V = ⅓Bh","V = ⅔Bh"],2,
+    "V = ⅓Bh."),
+  q("volume","Volume","What is the material volume of a hollow cylinder with outer radius R, inner radius r, and length h?","cylinder",
+    ["V = π(R-r)²h","V = π(R²-r²)h","V = 2π(R+r)h","V = π(R²+r²)h"],1,
+    "Use annular cross-sectional area times length: V = π(R²-r²)h."),
+
+  q("surface","Surface Area","What is the total surface area of a rectangular prism?","prism",
+    ["S = lwh","S = 2(l+w+h)","S = 2(lw+lh+wh)","S = lw+lh+wh"],2,
+    "There are two faces of each pair: S = 2(lw+lh+wh)."),
+  q("surface","Surface Area","What is the lateral surface area of a cylinder, excluding its circular ends?","cylinder",
+    ["Sᴸ = πr²","Sᴸ = 2πrh","Sᴸ = 2πr²+2πrh","Sᴸ = πr²h"],1,
+    "Unwrap the side into a rectangle: circumference × height = 2πr·h."),
+  q("surface","Surface Area","What is the total surface area of a closed cylinder?","cylinder",
+    ["S = 2πrh","S = 2πrh + 2πr²","S = πr²h","S = 4πr²"],1,
+    "Add the lateral area and both circular ends: S = 2πrh + 2πr²."),
+  q("surface","Surface Area","What is the surface area of a sphere?","sphere",
+    ["S = πr²","S = 2πr²","S = 4πr²","S = ⁴⁄₃πr³"],2,
+    "S = 4πr²."),
+  q("surface","Surface Area","What is the lateral surface area of a cone with radius r and slant height ℓ?","cone",
+    ["Sᴸ = πrℓ","Sᴸ = πr²h","Sᴸ = 2πrℓ","Sᴸ = ⅓πr²h"],0,
+    "The curved side area is Sᴸ = πrℓ."),
+  q("surface","Surface Area","What is the total surface area of a closed cone?","cone",
+    ["S = πrℓ","S = πrℓ + πr²","S = 2πrh + 2πr²","S = πr²h"],1,
+    "Add the curved side and circular base: S = πrℓ + πr²."),
+
+  q("engineering","Engineering Extra","What is the circumference of a circle?","circle",
+    ["C = πr²","C = 2πr","C = 4πr²","C = πr³"],1,
+    "C = 2πr, which is also C = πd."),
+  q("engineering","Engineering Extra","For an angle θ measured in radians, what is the arc length?","arc",
+    ["s = r/θ","s = rθ","s = 2πrθ","s = πr²θ"],1,
+    "s = rθ, provided θ is in radians."),
+  q("engineering","Engineering Extra","What is the centroidal area moment of inertia of a rectangle about its horizontal centroidal axis?","rectangle",
+    ["Iₓ = bh²/2","Iₓ = bh³/12","Iₓ = b³h/12","Iₓ = bh³/3"],1,
+    "Iₓ = bh³/12. The dimension perpendicular to the axis is the one cubed."),
+  q("engineering","Engineering Extra","What is the centroidal area moment of inertia of a solid circle about any centroidal diameter?","circle",
+    ["I = πr²/4","I = πr³/4","I = πr⁴/4","I = πr⁴/2"],2,
+    "I = πr⁴/4. The polar moment for a solid circle is J = πr⁴/2.")
+];
+
+let mode = "all";
+let set = [];
+let index = 0;
+let score = 0;
+let attempts = 0;
+let streak = 0;
+let answered = false;
+
+const $ = id => document.getElementById(id);
+
+function shuffle(arr) {
+  const copy = [...arr];
+  for (let i = copy.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [copy[i], copy[j]] = [copy[j], copy[i]];
+  }
+  return copy;
+}
+
+function titleForMode(m) {
+  return {
+    all: ["Mixed Geometry Quiz", "Choose the correct formula. Variables are defined in the explanations and reference sheet."],
+    area2d: ["2D Area Quiz", "Practice the areas of common planar shapes."],
+    volume: ["Volume Quiz", "Practice volumes of common solids and constant cross-section bodies."],
+    surface: ["Surface Area Quiz", "Distinguish lateral surface area from total surface area."],
+    engineering: ["Engineering Extras", "Practice circumference, arc length, and common area moments of inertia."],
+    reference: ["Formula Sheet", "A compact reference for the formulas included in this quiz."]
+  }[m];
+}
+
+function beginSet() {
+  const source = mode === "all" ? questions : questions.filter(x => x.category === mode);
+  set = shuffle(source);
+  index = 0;
+  score = 0;
+  attempts = 0;
+  streak = 0;
+  answered = false;
+  updateScore();
+  renderQuestion();
+}
+
+function updateScore() {
+  $("score").textContent = score;
+  $("attempts").textContent = attempts;
+  $("streak").textContent = `Streak: ${streak}`;
+}
+
+function renderQuestion() {
+  if (!set.length) return;
+  answered = false;
+  $("nextBtn").disabled = true;
+  const item = set[index];
+
+  $("questionCounter").textContent = `Question ${index + 1} of ${set.length}`;
+  $("progressBar").style.width = `${(index / set.length) * 100}%`;
+  $("topicPill").textContent = item.topic;
+  $("prompt").textContent = item.prompt;
+  $("diagram").innerHTML = diagrams[item.diagram] || "";
+  $("feedback").className = "feedback";
+  $("feedback").innerHTML = "";
+
+  const choiceBox = $("choices");
+  choiceBox.innerHTML = "";
+  item.choices.forEach((text, i) => {
+    const button = document.createElement("button");
+    button.className = "choice";
+    button.innerHTML = text;
+    button.addEventListener("click", () => selectAnswer(i));
+    choiceBox.appendChild(button);
+  });
+
+  $("nextBtn").textContent = index === set.length - 1 ? "Finish Set" : "Next Question";
+}
+
+function selectAnswer(selected) {
+  if (answered) return;
+  answered = true;
+  attempts++;
+  const item = set[index];
+  const buttons = [...document.querySelectorAll(".choice")];
+  buttons.forEach((b, i) => {
+    b.disabled = true;
+    if (i === item.answer) b.classList.add("correct");
+  });
+
+  const feedback = $("feedback");
+  if (selected === item.answer) {
+    score++;
+    streak++;
+    buttons[selected].classList.add("correct");
+    feedback.className = "feedback show good";
+    feedback.innerHTML = `<strong>Correct.</strong> ${item.explanation}`;
+  } else {
+    streak = 0;
+    buttons[selected].classList.add("wrong");
+    feedback.className = "feedback show bad";
+    feedback.innerHTML = `<strong>Not quite.</strong> ${item.explanation}`;
+  }
+
+  updateScore();
+  $("nextBtn").disabled = false;
+  $("progressBar").style.width = `${((index + 1) / set.length) * 100}%`;
+}
+
+function nextQuestion() {
+  if (!answered) return;
+  if (index < set.length - 1) {
+    index++;
+    renderQuestion();
+  } else {
+    showResults();
+  }
+}
+
+function showResults() {
+  const pct = attempts ? Math.round((score / attempts) * 100) : 0;
+  $("topicPill").textContent = "Set Complete";
+  $("prompt").textContent = `You scored ${score} out of ${attempts} (${pct}%).`;
+  $("diagram").innerHTML = `
+    <div style="text-align:center;padding:22px">
+      <div style="font-size:3.3rem;font-weight:850">${pct}%</div>
+      <div style="color:#667085;margin-top:6px">${pct >= 90 ? "Excellent recall." : pct >= 75 ? "Solid foundation." : "Review the formula sheet, then try again."}</div>
+    </div>`;
+  $("choices").innerHTML = "";
+  $("feedback").className = "feedback show good";
+  $("feedback").innerHTML = `Correct answers: <strong>${score}</strong> &nbsp; | &nbsp; Missed: <strong>${attempts - score}</strong>`;
+  $("questionCounter").textContent = `Completed ${set.length} questions`;
+  $("progressBar").style.width = "100%";
+  $("nextBtn").disabled = false;
+  $("nextBtn").textContent = "Try Again";
+  answered = true;
+  $("nextBtn").onclick = () => {
+    $("nextBtn").onclick = nextQuestion;
+    beginSet();
+  };
+}
+
+document.querySelectorAll(".nav-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll(".nav-btn").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    mode = btn.dataset.mode;
+    const [title, intro] = titleForMode(mode);
+    $("pageTitle").textContent = title;
+    $("pageIntro").textContent = intro;
+
+    if (mode === "reference") {
+      $("quizView").classList.add("hidden");
+      $("referenceView").classList.remove("hidden");
+    } else {
+      $("referenceView").classList.add("hidden");
+      $("quizView").classList.remove("hidden");
+      $("nextBtn").onclick = nextQuestion;
+      beginSet();
+    }
+  });
+});
+
+$("nextBtn").onclick = nextQuestion;
+$("restartBtn").addEventListener("click", beginSet);
+
+beginSet();
+</script>
+</body>
+</html>
