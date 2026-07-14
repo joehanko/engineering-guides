@@ -1,0 +1,317 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Joe's Engineering Guides</title>
+
+    <style>
+      :root {
+        --background: #f4f6f8;
+        --panel: #ffffff;
+        --text: #17202a;
+        --muted: #667085;
+        --border: #d9dee7;
+        --accent: #2457d6;
+        --header: #182033;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family:
+          system-ui,
+          -apple-system,
+          BlinkMacSystemFont,
+          "Segoe UI",
+          sans-serif;
+        background: var(--background);
+        color: var(--text);
+      }
+
+      header {
+        padding: 56px 20px;
+        text-align: center;
+        color: white;
+        background: var(--header);
+      }
+
+      header h1 {
+        margin: 0 0 10px;
+        font-size: clamp(2rem, 6vw, 3rem);
+      }
+
+      header p {
+        max-width: 680px;
+        margin: 0 auto;
+        color: #c2cad9;
+        font-size: 1.05rem;
+        line-height: 1.5;
+      }
+
+      main {
+        width: min(1000px, calc(100% - 32px));
+        margin: 36px auto;
+      }
+
+      .section-heading {
+        margin-bottom: 18px;
+      }
+
+      .section-heading h2 {
+        margin: 0 0 6px;
+      }
+
+      .section-heading p {
+        margin: 0;
+        color: var(--muted);
+      }
+
+      .resource-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        gap: 18px;
+      }
+
+      .resource-card {
+        display: block;
+        min-height: 155px;
+        padding: 22px;
+        color: inherit;
+        text-decoration: none;
+        background: var(--panel);
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        box-shadow: 0 8px 24px rgba(20, 32, 60, 0.07);
+        transition:
+          transform 0.15s ease,
+          border-color 0.15s ease,
+          box-shadow 0.15s ease;
+      }
+
+      .resource-card:hover {
+        transform: translateY(-3px);
+        border-color: var(--accent);
+        box-shadow: 0 12px 28px rgba(20, 32, 60, 0.11);
+      }
+
+      .resource-card h3 {
+        margin: 0 0 8px;
+        color: var(--accent);
+        font-size: 1.16rem;
+      }
+
+      .resource-card p {
+        margin: 0;
+        color: var(--muted);
+        line-height: 1.5;
+      }
+
+      .filename {
+        display: block;
+        margin-top: 16px;
+        color: #8a94a6;
+        font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+        font-size: 0.78rem;
+        overflow-wrap: anywhere;
+      }
+
+      .status {
+        padding: 22px;
+        color: var(--muted);
+        text-align: center;
+        background: var(--panel);
+        border: 1px solid var(--border);
+        border-radius: 14px;
+      }
+
+      .error {
+        color: #b42318;
+      }
+
+      footer {
+        padding: 30px 20px;
+        color: var(--muted);
+        text-align: center;
+      }
+
+      @media (max-width: 600px) {
+        header {
+          padding: 40px 18px;
+        }
+
+        main {
+          width: min(100% - 20px, 1000px);
+          margin-top: 24px;
+        }
+
+        .resource-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <header>
+      <h1>Joe's Engineering Guides</h1>
+      <p>
+        Interactive quizzes, cheatsheets, calculators, and applets for
+        engineering students and practicing engineers.
+      </p>
+    </header>
+
+    <main>
+      <div class="section-heading">
+        <h2>Resources</h2>
+        <p>
+          Resources are loaded automatically from the Engineering Guides
+          repository.
+        </p>
+      </div>
+
+      <div id="resourceGrid" class="resource-grid">
+        <div class="status">Loading resources…</div>
+      </div>
+    </main>
+
+    <footer>
+      Joe's Engineering Guides · Open-source educational resources
+      <br />
+      <br />
+
+      <a href="https://www.buymeacoffee.com/joehanko"
+        ><img
+          src="https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=☕&slug=joehanko&button_colour=2457d6&font_colour=ffffff&font_family=Poppins&outline_colour=000000&coffee_colour=FFDD00"
+      /></a>
+    </footer>
+
+    <script
+      data-name="BMC-Widget"
+      data-cfasync="false"
+      src="https://cdnjs.buymeacoffee.com/1.0.0/widget.prod.min.js"
+      data-id="joehanko"
+      data-description="Support me on Buy me a coffee!"
+      data-message=""
+      data-color="#2457d6"
+      data-position="Right"
+      data-x_margin="18"
+      data-y_margin="18"
+    ></script>
+
+    <script>
+      const repositoryContentsUrl =
+        "https://api.github.com/repos/joehanko/engineering-guides/contents";
+
+      /*
+      Optional overrides for nicer titles and descriptions.
+
+      You do not need to add every new file here. Files that are not listed
+      will still appear automatically with a title generated from the filename.
+    */
+      const resourceDetails = {
+        "geometry_formula_quiz.html": {
+          title: "Engineering Geometry Formula Quiz",
+          description:
+            "Practice common area, volume, surface-area, and engineering geometry formulas.",
+        },
+
+        "chemistry_1_quiz.html": {
+          title: "Chemistry I Final Quiz",
+          description:
+            "Review foundational Chemistry I concepts with an interactive practice quiz.",
+        },
+      };
+
+      function titleFromFilename(filename) {
+        return filename
+          .replace(/\.html$/i, "")
+          .replace(/[_-]+/g, " ")
+          .replace(/\b\w/g, (letter) => letter.toUpperCase());
+      }
+
+      function descriptionFromFilename(filename) {
+        const title = titleFromFilename(filename);
+        return `Open the ${title} interactive resource.`;
+      }
+
+      function createResourceCard(file) {
+        const details = resourceDetails[file.name] || {};
+        const title = details.title || titleFromFilename(file.name);
+        const description =
+          details.description || descriptionFromFilename(file.name);
+
+        const card = document.createElement("a");
+        card.className = "resource-card";
+        card.href = encodeURI(file.name);
+
+        const heading = document.createElement("h3");
+        heading.textContent = title;
+
+        const paragraph = document.createElement("p");
+        paragraph.textContent = description;
+
+        const filename = document.createElement("span");
+        filename.className = "filename";
+        filename.textContent = file.name;
+
+        card.append(heading, paragraph, filename);
+        return card;
+      }
+
+      async function loadResources() {
+        const grid = document.getElementById("resourceGrid");
+
+        try {
+          const response = await fetch(repositoryContentsUrl, {
+            headers: {
+              Accept: "application/vnd.github+json",
+            },
+          });
+
+          if (!response.ok) {
+            throw new Error(`GitHub API returned ${response.status}`);
+          }
+
+          const files = await response.json();
+
+          const htmlFiles = files
+            .filter(
+              (file) =>
+                file.type === "file" &&
+                file.name.toLowerCase().endsWith(".html") &&
+                file.name.toLowerCase() !== "index.html",
+            )
+            .sort((a, b) => a.name.localeCompare(b.name));
+
+          grid.innerHTML = "";
+
+          if (htmlFiles.length === 0) {
+            grid.innerHTML =
+              '<div class="status">No HTML resources are currently available.</div>';
+            return;
+          }
+
+          htmlFiles.forEach((file) => {
+            grid.appendChild(createResourceCard(file));
+          });
+        } catch (error) {
+          console.error(error);
+
+          grid.innerHTML = `
+          <div class="status error">
+            The resource directory could not be loaded right now.
+            Individual quizzes remain available through their direct URLs.
+          </div>
+        `;
+        }
+      }
+
+      loadResources();
+    </script>
+  </body>
+</html>
